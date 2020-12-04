@@ -1,0 +1,4 @@
+book/
+debug/
+target/
+Cargo.lock
