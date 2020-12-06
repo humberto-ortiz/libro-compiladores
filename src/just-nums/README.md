@@ -18,7 +18,7 @@ esto crea un nuevo directorio `just-numbers` con varios archivos, incluyendo
 
 ```
 cargo build
-./target/debug/just-nums 123.jn > 123.S
-nasm -f elf64 -o 123.o 123.S
+cargo run 123.jn > 123.s
+nasm -f elf64 -o 123.o 123.s
 gcc -g -o 123 main.c 123.o
 ```
