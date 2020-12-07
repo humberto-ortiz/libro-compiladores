@@ -11,12 +11,18 @@ Ve a un directorio donde quieras almacenar el proyecto y corre:
 ```
 cargo new just-numbers
 ```
-
 esto crea un nuevo directorio `just-numbers` con varios archivos, incluyendo
 `Cargo.toml` y `src/main.rs`. Cambiense a este nuevo directorio en la consola.
 
+La funcion `main` solo tiene un hello world. Vamos a modificarlo para leer un
+numero de un archivo, e imprimir ensamblador de x86_64 para almacenar el numero
+en el registro `rax`.
 
+```rust
+{{#include src/main.rs}}
 ```
+
+```bash
 cargo build
 cargo run 123.jn > 123.s
 nasm -f elf64 -o 123.o 123.s
