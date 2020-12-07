@@ -21,10 +21,28 @@ en el registro `rax`.
 ```rust
 {{#include src/main.rs}}
 ```
-
+Si tuvieramos un archivo como `123.jn` que tiene adentro solo el numero `123` podrimamos compilarlo con las siguientes instrucciones:
 ```bash
 cargo build
 cargo run 123.jn > 123.s
+```
+Y el archivo `123.s` contendria las instrucciones en assembly para devolver 123.
+```assembly
+{{#include 123.s}}
+```
+La etiqueta `our_code_starts_here` dejaria 123 en el registro `rax`.
+
+Ahora necesitamos un programa que reciba este resultado y haga algo util. En nuestro caso, vamos a hacer un programa en C que imprima el resultado.
+```C
+{{#include main.c}}
+```
+Este programa declara `our_code_starts_here` como una funcion externa en assembly, y la llama, guardando el resultado en `result`. Luego imprime el resultado.
+
+Ahora estamos listos para combinar el programa en C (nuestro "runtime") con el programa en assembly para hacer un programa completo.
+
+```bash
 nasm -f elf64 -o 123.o 123.s
 gcc -g -o 123 main.c 123.o
 ```
+
+Si todo salio bien, si corren `./123` debe salir `123` en pantalla. 
