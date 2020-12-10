@@ -44,5 +44,28 @@ Ahora estamos listos para combinar el programa en C (nuestro "runtime") con el p
 nasm -f elf64 -o 123.o 123.s
 gcc -g -o 123 main.c 123.o
 ```
+*_En la Mac, pueden ensamblar sustituyendo `-f elf64` por `-f macho64`._
 
 Si todo salio bien, si corren `./123` debe salir `123` en pantalla. 
+
+# Conclusión
+
+```mermaid
+graph LR;
+    jn[/123.jn/]-->rs[cargo run];
+    rs-->s[/123.s/];
+    s-->nasm[nasm];
+    nasm-->obj[/123.o/];
+    obj-->cc[gcc];
+    main[/main.c/]-->cc;
+    cc-->exe[/123/];
+```
+
+¡Hicimos un compilador! No parece mucho, y es algo frágil, pero tiene todos los
+componentes principales: lee un programa en ASCII, lo convierte a una
+representacion binaria, y lo traduce a lenguage de máquina. Hicimos varias
+trampas y usamos algunos trucos, pero funciona, y no es complicado (cabe en 19
+lineas de rust).
+
+En los siguientes capitulos haremos mas compiladores, y utilizaremos
+herramientas mas sofisticadas.
