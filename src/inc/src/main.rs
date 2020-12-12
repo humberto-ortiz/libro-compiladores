@@ -2,23 +2,25 @@
 
 lalrpop_mod!(pub nums); // synthesized by LALRPOP
 
-#[test]
-fn numbers() {
-  assert!(nums::NumParser::new().parse("22").is_ok());
-  assert!(nums::NumParser::new().parse("123").is_ok());
-  assert!(nums::NumParser::new().parse("-22)").is_err());
-}
-
 use std::fs;
 use std::env;
 
-fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
+fn compile(prog : i64) -> String {
+    format!("section .text\n\
+            global our_code_starts_here\n\
+            our_code_starts_here:\n\
+            \tmov RAX, {}\n\
+            \tret\n", prog)
+}
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();
 
     let filename = &args[1];
 
-    let foo = fs::read_to_string(filename)?;
-    let prog = nums::NumParser::new().parse(&foo);
-    println!("{:?}", prog.unwrap());
+    let prog_text = fs::read_to_string(filename)?;
+    let prog = nums::NumParser::new().parse(&prog_text);
+    let instr = compile(prog.unwrap());
+    println!("{}", instr);
     Ok(())
 }
